@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Duck Game</title>
+</head>
+<body>
+<!--
+    <pre>
+       _
+    __(·)<
+    \_>)</pre>
+    -->
+    <img src="/images/duckcircle.png" alt="duck sticker logo" width="100" height="100">
+    
+    <h1>Round: <span id="round">1</span></h1>
+    <h1>Current Number of Players in Round: <span id="score">0</span></h1>
+    <h1>Target Number of Players for Round: <span id="target">10</span></h1>
+    
+
+    <h2 id="custom-message" style="color: red;"></h2>
+
+    <h3>Past Round Winners</h3>
+    <table border="1" cellpadding="5" style="font-family: monospace;">
+        <thead> 
+            <tr>
+                <th>Round</th>
+                <th>Winner ID (Last 5)</th>
+            </tr>
+        </thead>
+        <tbody id="winner-table-body">
+        </tbody>
+    </table>
+    <h6 id="game-status" style="color: green;"></h6>
+    <script>
+async function fetchScore() {
+    try {
+        const response = await fetch('/score');
+        const data = await response.json();
+
+        document.getElementById('score').textContent = data.score;
+        document.getElementById('round').textContent = data.round;
+        document.getElementById('target').textContent = data.target;
+        
+        document.getElementById('custom-message').textContent = data.message || "";
+
+        const statusEl = document.getElementById('game-status');
+        if (data.game_enabled) {
+            statusEl.textContent = '🟢 Game is ON';
+            statusEl.style.color = 'green';
+        } else {
+            statusEl.textContent = '🔴 Game is OFF';
+            statusEl.style.color = 'red';
+        }
+
+    } catch (error) {
+        console.error('Error fetching score:', error);
+    }
+}
+
+
+        async function fetchWinners() {
+            try {
+                const response = await fetch('/winners');
+                const data = await response.json();
+
+                const tbody = document.getElementById('winner-table-body');
+                tbody.innerHTML = '';
+                data.forEach(row => {
+                    const tr = document.createElement('tr');
+                    const tdRound = document.createElement('td');
+                    tdRound.textContent = row.round;
+                    const tdWinner = document.createElement('td');
+                    tdWinner.textContent = row.winner;
+                    tr.appendChild(tdRound);
+                    tr.appendChild(tdWinner);
+                    tbody.appendChild(tr);
+                });
+            } catch (error) {
+                console.error('Error fetching winners:', error);
+            }
+        }
+
+        async function submitUniqueId() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const id = urlParams.get('id');
+
+            if (id) {
+                try {
+                    const response = await fetch('/increment', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ id })
+                    });
+
+                    const data = await response.json();
+
+                    if (data.error) {
+                        document.getElementById('custom-message').textContent = data.error;
+                    } else {
+                        document.getElementById('score').textContent = data.score;
+                        document.getElementById('round').textContent = data.round;
+                        document.getElementById('target').textContent = data.target;
+                    
+                        document.getElementById('custom-message').textContent = data.message ? data.message : "";
+                        fetchWinners();
+                    }
+                } catch (error) {
+                    console.error('Error submitting ID:', error);
+                }
+            }
+        }
+
+        fetchScore();
+        fetchWinners();
+        submitUniqueId();
+        setInterval(() => {
+            fetchScore();
+            fetchWinners();
+        }, 5000);
+    </script>
+</body>
+</html>
+
