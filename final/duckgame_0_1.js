@@ -13,7 +13,9 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, 'public')));
 
 // Initialize SQLite database
-const db = new sqlite3.Database('./game.db', (err) => {
+const dbPath = path.join(__dirname, 'game.db');
+const db = new sqlite3.Database(dbPath, (err) => {
+//const db = new sqlite3.Database('./game.db', (err) => {
     if (err) console.error(err.message);
     console.log('Connected to SQLite database.');
 });
@@ -47,9 +49,11 @@ db.run(`CREATE TABLE IF NOT EXISTS round_winners (
 
 
 
-// Load predefined player IDs from a file
+// Load predefined player IDs from a file with the __dirname path
 function loadPlayerIDs() {
-    fs.readFile('players.txt', 'utf8', (err, data) => {
+    const playersPath = path.join(__dirname, 'players.txt');
+    fs.readFile(playersPath, 'utf8', (err, data) => {
+//fs.readFile('players.txt', 'utf8', (err, data) => {
         if (err) {
             console.error("Error reading players.txt:", err);
             return;
