@@ -100,43 +100,43 @@ app.get('/winners', (req, res) => {
 
 app.post('/set-target', (req, res) => {
     const { target } = req.body;
-    db.run("UPDATE game_score SET target = ? WHERE id = 1", [target], () => res.redirect('/admin'));
+    db.run("UPDATE game_score SET target = ? WHERE id = 1", [target], () => res.redirect('/admin.html'));
 });
 
 app.post('/set-round', (req, res) => {
     const { round } = req.body;
-    db.run("UPDATE game_score SET round = ? WHERE id = 1", [round], () => res.redirect('/admin'));
+    db.run("UPDATE game_score SET round = ? WHERE id = 1", [round], () => res.redirect('/admin.html'));
 });
 
 app.post('/reset-score', (req, res) => {
-    db.run("UPDATE game_score SET score = 0 WHERE id = 1", () => res.redirect('/admin'));
+    db.run("UPDATE game_score SET score = 0 WHERE id = 1", () => res.redirect('/admin.html'));
 });
 
 app.post('/reset-urls', (req, res) => {
-    db.run("DELETE FROM used_urls", () => res.redirect('/admin'));
+    db.run("DELETE FROM used_urls", () => res.redirect('/admin.html'));
 });
 
 app.post('/set-message', (req, res) => {
     const { message } = req.body;
-    db.run("UPDATE game_score SET message = ? WHERE id = 1", [message], () => res.redirect('/admin'));
+    db.run("UPDATE game_score SET message = ? WHERE id = 1", [message], () => res.redirect('/admin.html'));
 });
 
 app.post('/clear-message', (req, res) => {
-    db.run("UPDATE game_score SET message = NULL WHERE id = 1", () => res.redirect('/admin'));
+    db.run("UPDATE game_score SET message = NULL WHERE id = 1", () => res.redirect('/admin.html'));
 });
 
 app.post('/add-player', (req, res) => {
     const { id } = req.body;
-    db.run("INSERT OR IGNORE INTO players (id) VALUES (?)", [id], () => res.redirect('/admin'));
+    db.run("INSERT OR IGNORE INTO players (id) VALUES (?)", [id], () => res.redirect('/admin.html'));
 });
 
 app.post('/remove-player', (req, res) => {
     const { id } = req.body;
-    db.run("DELETE FROM players WHERE id = ?", [id], () => res.redirect('/admin'));
+    db.run("DELETE FROM players WHERE id = ?", [id], () => res.redirect('/admin.html'));
 });
 
 app.post('/clear-winners', (req, res) => {
-    db.run("DELETE FROM round_winners", () => res.redirect('/admin'));
+    db.run("DELETE FROM round_winners", () => res.redirect('/admin.html'));
 });
 
 //game on and off route here
@@ -151,7 +151,7 @@ app.post('/toggle-game', (req, res) => {
 
         db.run("UPDATE game_score SET game_enabled = ?, message = ? WHERE id = 1",
             [newValue, newMessage],
-            () => res.redirect('/admin')
+            () => res.redirect('/admin.html')
         );
     });
 });
