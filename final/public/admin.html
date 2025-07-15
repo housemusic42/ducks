@@ -14,7 +14,6 @@
             padding: 15px;
         }
         form {
-            /* Reduced margin and padding on forms */
             margin-bottom: 10px;
             border: 1px solid #ddd;
             padding: 10px;
@@ -26,7 +25,6 @@
             font-weight: bold;
         }
         input[type="text"], input[type="number"] {
-            /* Reduced padding and margin on inputs */
             width: 95%;
             padding: 8px;
             margin-bottom: 8px;
@@ -34,7 +32,6 @@
             border-radius: 4px;
         }
         button {
-            /* Reduced padding on buttons */
             width: 100%;
             padding: 10px;
             border: none;
@@ -65,9 +62,7 @@
 
     <h3>Game Settings</h3>
     <form action="/set-target" method="post">
-        <label>Set Target Score:</label>
-        <input type="number" name="target" required>
-        <button type="submit">Update</button>
+        <label>Set Target Score:</label> <input type="number" name="target" required> <button type="submit">Update</button>
     </form>
     <form action="/set-round" method="post">
         <label>Set Round Number:</label>
