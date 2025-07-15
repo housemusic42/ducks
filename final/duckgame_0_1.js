@@ -95,59 +95,6 @@ app.get('/winners', (req, res) => {
     });
 });
 
-// Admin Page (Dynamically Generated)
-app.get('/admin', (req, res) => {
-        db.get("SELECT game_enabled FROM game_score WHERE id = 1", (err, row) => {
-        const status = row?.game_enabled ? "🟢 Game is ON" : "🔴 Game is OFF";
-        
-    res.send(`
-        <html>
-        <head><title>Admin Panel</title></head>
-        <body>
-            <h1>Admin Controls</h1>
-            <form action="/set-target" method="post">
-                <label>Set Target Score:</label>
-                <input type="number" name="target" required>
-                <button type="submit">Update</button>
-            </form>
-            <form action="/set-round" method="post">
-                <label>Set Round Number:</label>
-                <input type="number" name="round" required>
-                <button type="submit">Update</button>
-            </form>
-            <form action="/reset-score" method="post">
-                <button type="submit">Reset Score</button>
-            </form>
-            <form action="/reset-urls" method="post">
-                <button type="submit">Reset URLs</button>
-            </form>
-            <form action="/set-message" method="post">
-                <label>Set Custom Message:</label>
-                <input type="text" name="message">
-                <button type="submit">Update</button>
-            </form>
-            <form action="/clear-message" method="post">
-                <button type="submit">Clear Message</button>
-            </form>
-            <form action="/add-player" method="post">
-                <label>Add Player ID:</label>
-                <input type="text" name="id" required>
-                <button type="submit">Add</button>
-            </form>
-<form action="/clear-winners" method="post">
-    <button type="submit">Clear Round Winners</button>
-</form>
-
-<form action="/toggle-game" method="post">
-    <button type="submit">Toggle Game On/Off</button>
-</form>
-
-
-        </body>
-        </html>
-    `);
-    });
-});
 
 //routes for admin page
 
