@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Admin Panel</title>
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            line-height: 1.5;
+            margin: 0 auto;
+            max-width: 800px;
+            padding: 15px;
+        }
+        form {
+            margin-bottom: 10px;
+            border: 1px solid #ddd;
+            padding: 10px;
+            border-radius: 5px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        input[type="text"], input[type="number"] {
+            width: 95%;
+            padding: 8px;
+            margin-bottom: 8px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        button {
+            width: 100%;
+            padding: 10px;
+            border: none;
+            background-color: #007bff;
+            color: white;
+            font-size: 16px;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        hr {
+            margin: 20px 0;
+        }
+        @media (max-width: 600px) {
+            body {
+                padding: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <h1>Admin Controls</h1>
+    <h2 id="game-status">Loading status...</h2>
+
+    <hr>
+
+    <h3>Game Settings</h3>
+    <form action="/set-target" method="post">
+        <label>Set Target Score:</label> <input type="number" name="target" required> <button type="submit">Update</button>
+    </form>
+    <form action="/set-round" method="post">
+        <label>Set Round Number:</label>
+        <input type="number" name="round" required>
+        <button type="submit">Update</button>
+    </form>
+    <form action="/set-message" method="post">
+        <label>Set Custom Message:</label>
+        <input type="text" name="message">
+        <button type="submit">Update</button>
+    </form>
+    <form action="/add-player" method="post">
+        <label>Add Player ID:</label>
+        <input type="text" name="id" required>
+        <button type="submit">Add</button>
+    </form>
+
+    <hr>
+
+    <h3>Actions</h3>
+    <form action="/toggle-game" method="post">
+        <button type="submit">Toggle Game On/Off</button>
+    </form>
+    <form action="/reset-score" method="post">
+        <button type="submit">Reset Current Score</button>
+    </form>
+    <form action="/reset-urls" method="post">
+        <button type="submit">Reset URLs for Current Round</button>
+    </form>
+    <form action="/clear-winners" method="post">
+        <button type="submit">Clear All Round Winners</button>
+    </form>
+    <form action="/clear-message" method="post">
+        <button type="submit">Clear Custom Message</button>
+    </form>
+
+    <script>
+        async function fetchGameStatus() {
+            try {
+                const response = await fetch('/score');
+                const data = await response.json();
+                const statusEl = document.getElementById('game-status');
+                
+                if (data.game_enabled) {
+                    statusEl.textContent = '🟢 Game is ON';
+                    statusEl.style.color = 'green';
+                } else {
+                    statusEl.textContent = '🔴 Game is OFF';
+                    statusEl.style.color = 'red';
+                }
+            } catch (error) {
+                console.error('Error fetching status:', error);
+                document.getElementById('game-status').textContent = 'Could not load status.';
+            }
+        }
+        fetchGameStatus();
+    </script>
+</body>
+</html>
