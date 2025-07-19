@@ -112,14 +112,15 @@
         <tbody id="full-winner-table-body">
             </tbody>
     </table>
-    <script>
+
 
 
     <script>
         async function fetchGameStatus() {
             try {
-                const response = await fetch('/score');
-                const data = await response.json();
+                //const response = await fetch('/score');
+                const response = await fetch('/score', { credentials: 'same-origin' });
+		const data = await response.json();
                 const statusEl = document.getElementById('game-status');
                 
                 if (data.game_enabled) {
@@ -138,8 +139,9 @@
         // get full winners from db
         async function fetchFullWinners() {
             try {
-                const response = await fetch('/admin/full-winners');
-                const data = await response.json();
+                //const response = await fetch('/admin/full-winners');
+                const response = await fetch('/admin/full-winners', { credentials: 'same-origin' });
+		const data = await response.json();
 
                 const tbody = document.getElementById('full-winner-table-body');
                 tbody.innerHTML = ''; // clear...
