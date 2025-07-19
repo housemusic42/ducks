@@ -95,6 +95,14 @@ app.get('/winners', (req, res) => {
     });
 });
 
+//route for getting the full id of the winners, also creates anew specific admin route
+app.get('/admin/full-winners', (req, res) => {
+    db.all("SELECT round, winner FROM round_winners ORDER BY round DESC", (err, rows) => {
+        if (err) return res.status(500).json({ error: err.message });
+        res.json(rows);
+    });
+});
+
 
 //routes for admin page
 
