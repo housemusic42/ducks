@@ -29,6 +29,7 @@ db.run(`CREATE TABLE IF NOT EXISTS game_score (
     winner TEXT DEFAULT NULL,
     message TEXT DEFAULT NULL,
     game_enabled INTEGER DEFAULT 1
+    admin_message TEXT DEFAULT NULL
 )`);
 
 
@@ -77,7 +78,7 @@ db.get("SELECT * FROM game_score WHERE id = 1", (err, row) => {
 
 // Get current score and round info
 app.get('/score', (req, res) => {
-    db.get("SELECT score, round, target, winner, message, game_enabled FROM game_score WHERE id = 1", (err, row) => {
+    db.get("SELECT score, round, target, winner, message, game_enabled, admin_message FROM game_score WHERE id = 1", (err, row) => {
         if (err) return res.status(500).json({ error: err.message });
         res.json(row);
     });
@@ -146,6 +147,14 @@ app.post('/remove-player', (req, res) => {
 app.post('/clear-winners', (req, res) => {
     db.run("DELETE FROM round_winners", () => res.redirect('/53f98a3f6f0250065cc8.html'));
 });
+
+//test of admin-message section
+app.post('/set-admin-message', (req, res) => {
+    const { admin_message } = req.body;
+    db.run("UPDATE game_score SET admin_message = ? WHERE id = 1", [admin_message], () => {
+        res.redirect('/53f98a3f6f0250065cc8.html');
+    });
+})
 
 //game on and off route here
 app.post('/toggle-game', (req, res) => {

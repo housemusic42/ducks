@@ -80,7 +80,13 @@
         <button type="submit">Add</button>
     </form>
 
-    <hr>
+    <form action="/set-admin-message" method="post">
+        <label>Set Persistent Admin Message:</label>
+        <input type="text" name="admin_message">
+        <button type="submit">Set Message</button>
+    </form>
+    
+<hr>
 
     <h3>Actions</h3>
     <form action="/toggle-game" method="post">
