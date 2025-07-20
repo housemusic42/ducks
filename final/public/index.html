@@ -45,6 +45,16 @@ async function fetchScore() {
         
         document.getElementById('custom-message').textContent = data.message || "";
 
+
+        const adminMessageEl = document.getElementById('admin-message-display');
+        if (data.admin_message) {
+            adminMessageEl.textContent = data.admin_message;
+            adminMessageEl.style.display = 'block'; 
+        } else {
+            adminMessageEl.style.display = 'none'; // hide if there's no message
+        }
+
+
         const statusEl = document.getElementById('game-status');
         if (data.game_enabled) {
             statusEl.textContent = '🟢 Game is ON';
