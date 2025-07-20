@@ -28,7 +28,7 @@ db.run(`CREATE TABLE IF NOT EXISTS game_score (
     target INTEGER DEFAULT 10,
     winner TEXT DEFAULT NULL,
     message TEXT DEFAULT NULL,
-    game_enabled INTEGER DEFAULT 1
+    game_enabled INTEGER DEFAULT 1,
     admin_message TEXT DEFAULT NULL
 )`);
 
