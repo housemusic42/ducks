@@ -90,6 +90,9 @@
     <form action="/toggle-game" method="post">
         <button type="submit">Toggle Game On/Off</button>
     </form>
+        <form action="/reload-players" method="post" onsubmit="return confirm('Are you sure? This will remove all players from the database and reload them from players.txt.');">
+        <button type="submit" style="background-color: #ffc107; color: black;">Reload Players from File</button>
+    </form>
     <form action="/reset-score" method="post">
         <button type="submit">Reset Current Score</button>
     </form>

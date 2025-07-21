@@ -186,7 +186,17 @@ app.post('/toggle-game', (req, res) => {
     });
 });
 
-
+// reload players. delets all players and then reloads from players file
+app.post('/reload-players', (req, res) => {
+        db.run("DELETE FROM players", (err) => {
+        if (err) {
+            console.error(err.message);
+            return res.status(500).json({ error: "Failed to clear players table." });
+        }
+        loadPlayerIDs();
+        res.redirect('/53f98a3f6f0250065cc8.html');
+    });
+});
 
 // Increment score if the ID is pre-approved... some regex for input validation
 app.post('/increment', (req, res) => {
