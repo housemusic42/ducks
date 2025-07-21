@@ -80,7 +80,10 @@ db.get("SELECT * FROM game_score WHERE id = 1", (err, row) => {
 // Get current score and round info
 app.get('/score', (req, res) => {
     db.get("SELECT score, round, target, winner, message, game_enabled, admin_message FROM game_score WHERE id = 1", (err, row) => {
-        if (err) return res.status(500).json({ error: err.message });
+        if (err) {
+           console.error(err.message); 
+           return res.status(500).json({ error: "An internal server error occurred." }); 
+        }
         res.json(row);
     });
 });
@@ -88,7 +91,10 @@ app.get('/score', (req, res) => {
 // Get last winners for index page
 app.get('/winners', (req, res) => {
     db.all("SELECT round, winner FROM round_winners ORDER BY round DESC LIMIT 10", (err, rows) => {
-        if (err) return res.status(500).json({ error: err.message });
+        if (err) {
+           console.error(err.message); 
+           return res.status(500).json({ error: "An internal server error occurred." }); 
+        }
         const masked = rows.map(row => ({
             round: row.round,
             winner: row.winner ? row.winner.slice(-5) : '-----'
@@ -100,7 +106,10 @@ app.get('/winners', (req, res) => {
 //route for getting the full id of the winners, also creates anew specific admin route
 app.get('/admin/full-winners', (req, res) => {
     db.all("SELECT round, winner FROM round_winners ORDER BY round DESC", (err, rows) => {
-        if (err) return res.status(500).json({ error: err.message });
+        if (err) {
+           console.error(err.message); 
+           return res.status(500).json({ error: "An internal server error occurred." }); 
+        }
         res.json(rows);
     });
 });
@@ -160,7 +169,10 @@ app.post('/set-admin-message', (req, res) => {
 //game on and off route here
 app.post('/toggle-game', (req, res) => {
     db.get("SELECT game_enabled FROM game_score WHERE id = 1", (err, row) => {
-        if (err) return res.status(500).send("DB Error");
+        if (err) {
+           console.error(err.message); 
+           return res.status(500).json({ error: "An internal server error occurred." }); 
+        }
 
         const newValue = row.game_enabled ? 0 : 1;
         const newMessage = newValue === 0
@@ -185,11 +197,18 @@ app.post('/increment', (req, res) => {
     }
 
     db.get("SELECT id FROM players WHERE id = ?", [id], (err, validPlayer) => {
-        if (err) return res.status(500).json({ error: err.message });
+        if (err) {
+           console.error(err.message); 
+           return res.status(500).json({ error: "An internal server error occurred." }); 
+        }
         if (!validPlayer) {
             return res.json({ error: "Invalid player ID. You are not authorized to play." });
         }
         db.get("SELECT * FROM game_score WHERE id = 1", (err, game) => {
+            if (err) {
+               console.error(err.message); 
+               return res.status(500).json({ error: "An internal server error occurred." }); 
+            }
             if (!game.game_enabled) {
                 return res.status(403).json({ error: "The game is currently turned off." });
             }
@@ -197,18 +216,28 @@ app.post('/increment', (req, res) => {
             //if (err) return res.status(500).json({ error: err.message });
 
             db.get("SELECT id FROM used_urls WHERE id = ? AND round = ?", [id, game.round], (err, row) => {
+                if (err) {
+                   console.error(err.message); 
+                   return res.status(500).json({ error: "An internal server error occurred." }); 
+                }
                 if (row) {
                     return res.json({ error: "You have already played this round.", score: game.score, round: game.round, target: game.target, winner: game.winner });
                 }
 
                 db.run("INSERT INTO used_urls (id, round) VALUES (?, ?)", [id, game.round], (err) => {
-                    if (err) return res.status(500).json({ error: err.message });
+                    if (err) {
+                       console.error(err.message); 
+                       return res.status(500).json({ error: "An internal server error occurred." }); 
+                    }
 
                     let newScore = game.score + 1;
 
                     if (newScore >= game.target) {
                         db.all("SELECT id FROM used_urls WHERE round = ?", [game.round], (err, rows) => {
-                            if (err) return res.status(500).json({ error: err.message });
+                                    if (err) {
+                                       console.error(err.message); 
+                                       return res.status(500).json({ error: "An internal server error occurred." }); 
+                                    }
                             let winner = "No winner";
                             if (rows.length > 0) {
                                 const randomIndex = Math.floor(Math.random() * rows.length);
@@ -226,14 +255,20 @@ app.post('/increment', (req, res) => {
                                 db.run("UPDATE game_score SET score = 0, round = ?, target = ?, winner = ?, message = ?, game_enabled = 0 WHERE id = 1",
                                 //This round has ended! Congratulations to ${winner} who is now the goose.
                                     [newRound, newTarget, winner, `This round has ended - congratulations to ${winner.slice(-5)}! The next round will start soon `], (err) => {
-                                        if (err) return res.status(500).json({ error: err.message });
+                                                if (err) {
+                                                   console.error(err.message); 
+                                                   return res.status(500).json({ error: "An internal server error occurred." }); 
+                                                }
                                         res.json({ score: 0, round: newRound, target: newTarget, winner, message: ` ` });
                                 });
                             });
                         });
                     } else {
                         db.run("UPDATE game_score SET score = ? WHERE id = 1", [newScore], (err) => {
-                            if (err) return res.status(500).json({ error: err.message });
+                                    if (err) {
+                                       console.error(err.message); 
+                                       return res.status(500).json({ error: "An internal server error occurred." }); 
+                                    }
                             res.json({ score: newScore, round: game.round, target: game.target, winner: game.winner });
                         });
                     }
