@@ -59,10 +59,10 @@
     <h2 id="game-status">Loading status...</h2>
 
     <hr>
-
-    <h3>Game Settings</h3>
-    <form action="/set-target" method="post">
-        <label>Set Target Score:</label> <input type="number" name="target" required> <button type="submit">Update</button>
+<form action="/set-target" method="post">
+        <label>Set Target Score:</label>
+        <input type="number" name="target" required>
+        <button type="submit">Update</button>
     </form>
     <form action="/set-round" method="post">
         <label>Set Round Number:</label>
@@ -79,7 +79,6 @@
         <input type="text" name="id" required>
         <button type="submit">Add</button>
     </form>
-
     <form action="/set-admin-message" method="post">
         <label>Set Persistent Admin Message:</label>
         <input type="text" name="admin_message">
