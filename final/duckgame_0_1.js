@@ -193,6 +193,13 @@ app.post('/reload-players', (req, res) => {
             console.error(err.message);
             return res.status(500).json({ error: "Failed to clear players table." });
         }
+        //clear players that played already from the round 
+        db.run("DELETE FROM used_urls", (err) => {
+            if (err) {
+                console.error(err.message);
+                return res.status(500).json({ error: "Failed to clear used URLs table." });
+            }
+
         loadPlayerIDs();
         res.redirect('/53f98a3f6f0250065cc8.html');
     });
