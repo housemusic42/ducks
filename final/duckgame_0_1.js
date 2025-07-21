@@ -72,7 +72,8 @@ loadPlayerIDs();
 // Ensure score entry exists
 db.get("SELECT * FROM game_score WHERE id = 1", (err, row) => {
     if (!row) {
-        db.run("INSERT INTO game_score (id, score, round, target, winner, message, game_enabled) VALUES (1, 0, 1, 10, NULL, NULL, 1)");
+//        db.run("INSERT INTO game_score (id, score, round, target, winner, message, game_enabled) VALUES (1, 0, 1, 10, NULL, NULL, 1)");
+          db.run("INSERT INTO game_score (id, score, round, target, winner, message, game_enabled, admin_message) VALUES (1, 0, 1, 10, NULL, NULL, 1, NULL)");
     }
 });
 
