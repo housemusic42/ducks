@@ -35,7 +35,27 @@
             color: #0000FF; 
         }
         ul, ol {
-            margin-left: 40px;
+            /* desktop */
+            padding-left: 40px;
+        }
+
+        /* for mobile devices */
+        @media (max-width: 600px) {
+            #main-container {
+                width: 95%;
+                margin: 10px auto;
+                padding: 10px;
+                font-size: 14px;
+            }
+
+            ul, ol {
+                /* reduce indentation for mobile */
+                padding-left: 20px; 
+            }
+
+            h1 {
+                font-size: 22px;
+            }
         }
     </style>
 </head>
