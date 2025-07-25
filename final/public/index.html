@@ -24,15 +24,16 @@
             text-align: center;
         }
 
-        h1, h2, h3, h4, h5{
-            text-shadow: 2px 2px 3px #003300;
+        h1, h2, h3, h4, h5, h6{
+            text-shadow: 2px 2px 3px #2f302f;
+
         }
         
         table {
             background-color: #000000;
             margin-left: auto;
             margin-right: auto;
-            border: 5px outset #005500;
+            border: 5px outset #005500;            
         }
 
         th, td {
@@ -42,8 +43,7 @@
 
         hr {
             height: 10px;
-            border: none;
-            
+            border: none;            
         }
 
         #custom-message {
@@ -57,6 +57,12 @@
         
         #game-status {
             color: #FFA500;
+            /*background-color: #FFA500;*/
+        }
+        
+        p {
+            margin-top: 1em; 
+            margin-bottom: 1em; 
         }
     </style>
 </head>
@@ -64,23 +70,28 @@
     <img src="/images/duckcircle.png" alt="duck sticker logo" width="125" height="125">
 
     <marquee behavior="scroll" direction="left" style="font-size: 24px; font-weight: bold;">
-        Welcome to the Duck Game! The #1 Game on the Information Superhighway!
+        <h2>Welcome to the #1 Duck Game on the Information Superhighway!</h2>
     </marquee>
 
 <table>
     <tr>
         <td>
             <h1>Round: <span id="round">1</span></h1>
-            <h1>Players in Current Round: <span id="score">0</span> / <span id="target">10</span></h1>
+            <h1>Players in Round: <span id="score">0</span> / <span id="target">10</span></h1>
         </td>
     </tr>
 </table>
+
+<h5>To play, scan your NFC-enable duck sticker</h5>
+<h5>to join a round of the game.</h5>
+<h5>Once enough humans join a round, </h5>
+<h5>a random winner will be selected for some swag.</h5>
     
     <h2 id="custom-message"></h2>
     <h2 id="admin-message-display"></h2>
     
     <hr>
-    
+    <h6 id="game-status" style="font-size: 20px;"></h6>
     <h3>Past Round Winners (Hall of Fame!)</h3>
     <table cellpadding="5">
         <thead> 
@@ -92,10 +103,9 @@
         <tbody id="winner-table-body">
         </tbody>
     </table>
-    
-    <h6 id="game-status" style="font-size: 20px;"></h6>
-    
     <hr>
+
+
     <h3>IRL Meetup Information</h3>
     <h5>winner swag pick up and just general hang outs</h5>
     <table cellpadding="5">
@@ -119,7 +129,7 @@
     
     <h3>You are visitor number:</h3> 
   
-    <a href="http://stuff.mit.edu/doc/counter-howto.html"><img src="http://stuff.mit.edu/cgi/counter/theduckgame2025" alt="several"></a>
+    <a href="http://stuff.mit.edu/doc/counter-howto.html"><img src="http://stuff.mit.edu/cgi/counter/theduckgame2025" alt="visitor counter"></a>
 
     <hr>
     <img src="/images/underconstruction.gif" alt="under construction gif" width="45" height="45">
@@ -136,7 +146,8 @@
 
                 const adminMessageEl = document.getElementById('admin-message-display');
                 if (data.admin_message) {
-                    adminMessageEl.textContent = "A Message from the mods: " + data.admin_message;
+                    //adminMessageEl.textContent = "A Message from the mods: " + data.admin_message;
+                    adminMessageEl.innerHTML = "A message from the mods:<br>" + data.admin_message;
                     adminMessageEl.style.display = 'block'; 
                 } else {
                     adminMessageEl.style.display = 'none';
