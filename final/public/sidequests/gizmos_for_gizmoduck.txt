@@ -1,0 +1,1 @@
+Excellent hunting! Standard phone NFC readers are lazy - they usually just grab the primary NDEF record (and iOS is notoriously selective, only caring about URLs). Using apps or different hardware can help read those additional NDEF records... and much more. Your tag's memory runs deeper. Much deeper. What lies beyond the NDEF format? The right tools will reveal the key.

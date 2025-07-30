@@ -1,0 +1,5 @@
+Nice job solving the first clues!
+
+As you probably already know, The Duck Game uses Near Field Communication (NFC) enabled stickers to store and transmit data, specifically an NXP NTAG213 chip, which allows for storage of records using NFC Data Exchange Format (NDEF), a standardized data format to exchange data between NFC-enabled devices and tags. The game uses a URL record in this NDEF format on the tag to store and share your unique URL to join a round of the game. But wait - there's more!
+
+The NDEF format also allows for multiple NDEF records to be stored - and not just URLs. Grab some NFC tools from an app store and go on a duck hunt on one of the authorized sticker walls in the conference. A successful hunt will bring you to your next clue.
