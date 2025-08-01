@@ -48,7 +48,12 @@ db.run(`CREATE TABLE IF NOT EXISTS round_winners (
     winner TEXT
 )`);
 
-
+// table to try to save all the irl meetups
+db.run(`CREATE TABLE IF NOT EXISTS meetups (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    meetup_date TEXT NOT NULL,
+    location TEXT NOT NULL
+)`);
 
 // Load predefined player IDs from a file with the __dirname path
 function loadPlayerIDs() {
@@ -114,6 +119,16 @@ app.get('/admin/full-winners', (req, res) => {
     });
 });
 
+//route for the irl meetups table
+app.get('/meetups', (req, res) => {
+    db.all("SELECT * FROM meetups ORDER BY id", (err, rows) => {
+        if (err) {
+           console.error(err.message); 
+           return res.status(500).json({ error: "An internal server error occurred." }); 
+        }
+        res.json(rows);
+    });
+});
 
 //routes for admin page
 
@@ -165,6 +180,36 @@ app.post('/set-admin-message', (req, res) => {
         res.redirect('/53f98a3f6f0250065cc8.html');
     });
 })
+
+// route to add a meetup
+app.post('/admin/meetups/add', (req, res) => {
+    const { meetup_date, location } = req.body;
+    if (!meetup_date || !location) {
+        return res.status(400).send("Date and location are required.");
+    }
+    db.run("INSERT INTO meetups (meetup_date, location) VALUES (?, ?)", [meetup_date, location], (err) => {
+        if (err) {
+            console.error(err.message);
+            return res.status(500).send("Failed to add meetup.");
+        }
+        res.redirect('/53f98a3f6f0250065cc8.html');
+    });
+});
+
+// route to delete a meetup
+app.post('/admin/meetups/delete', (req, res) => {
+    const { id } = req.body;
+    db.run("DELETE FROM meetups WHERE id = ?", [id], (err) => {
+        if (err) {
+            console.error(err.message);
+            return res.status(500).send("Failed to delete meetup.");
+        }
+        res.redirect('/53f98a3f6f0250065cc8.html');
+    });
+});
+
+
+
 
 //game on and off route here
 app.post('/toggle-game', (req, res) => {

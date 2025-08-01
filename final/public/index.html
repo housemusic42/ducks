@@ -121,23 +121,16 @@
     <h3>IRL Meetup Information</h3>
     <h4>winner swag pick up and just general hang outs</h4>
     <table cellpadding="5">
-        <thead> 
+        <thead>
             <tr>
                 <th>Date & Time</th>
                 <th>Location</th>
             </tr>
         </thead>
-        <tbody>
-        <tr>
-           <td>Aug 8 at TBD</td>
-           <td>TBD</td>
-        </tr>
-        <tr>
-           <td>Aug 9 at TBD</td>
-           <td>TBD</td>
-                   </tr>
-        </tbody>
+        <tbody id="meetup-table-body">
+            </tbody>
     </table>
+    <hr>
     <h4>Huge thanks to Midwest Gadgets <a href="https://www.midwestgadgets.org/">https://www.midwestgadgets.org/</a> for supplying some prizes. Check them out online or in the vendor hall. Without them, the prizes would have been seriously lame.</h4>
     <h3>You are visitor number:</h3> 
   
@@ -227,13 +220,33 @@
                 }
             }
         }
+                async function fetchMeetups() {
+            try {
+                const response = await fetch('/meetups');
+                const data = await response.json();
+                const tbody = document.getElementById('meetup-table-body');
+                tbody.innerHTML = '';
+                data.forEach(row => {
+                    const tr = document.createElement('tr');
+                    tr.innerHTML = `
+                        <td>${row.meetup_date}</td>
+                        <td>${row.location}</td>
+                    `;
+                    tbody.appendChild(tr);
+                });
+            } catch (error) {
+                console.error('Error fetching meetups:', error);
+            }
+        }
         
         fetchScore();
         fetchWinners();
+        fetchMeetups();
         submitUniqueId();
         setInterval(() => {
             fetchScore();
             fetchWinners();
+            fetchMeetups();
         }, 5000);
     </script>
 </body>
