@@ -288,7 +288,7 @@ app.post('/increment', (req, res) => {
                    return res.status(500).json({ error: "An internal server error occurred." }); 
                 }
                 if (row) {
-                    return res.json({ error: "You have already played this round.", score: game.score, round: game.round, target: game.target, winner: game.winner });
+                    return res.json({ error: "You have already played this round. Please try again in the next round.", score: game.score, round: game.round, target: game.target, winner: game.winner });
                 }
 
                 db.run("INSERT INTO used_urls (id, round) VALUES (?, ?)", [id, game.round], (err) => {
