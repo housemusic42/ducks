@@ -336,7 +336,7 @@ app.post('/increment', (req, res) => {
                                        console.error(err.message); 
                                        return res.status(500).json({ error: "An internal server error occurred." }); 
                                     }
-                            res.json({ score: newScore, round: game.round, target: game.target, winner: game.winner });
+                            res.json({ score: newScore, round: game.round, target: game.target, winner: game.winner, message: "You have successfully joined the round!"});
                         });
                     }
                 });
